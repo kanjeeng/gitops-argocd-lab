@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-httpd
+  labels:
+    app: simple-httpd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-httpd
+  template:
+    metadata:
+      labels:
+        app: simple-httpd
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: simple-httpd
+      containers:
+        - name: httpd
+          image: httpd:latest
+          ports:
+            - name: http
+              containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            # Mount satu file memakai subPath agar isi folder document root lainnya tidak tertimpa.
+            - name: index
+              mountPath: /usr/local/apache2/htdocs/index.html
+              subPath: index.html
+              readOnly: true
+      volumes:
+        - name: index
+          configMap:
+            name: simple-httpd-index

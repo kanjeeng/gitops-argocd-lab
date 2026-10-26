@@ -1,0 +1,19 @@
+# Nilai tambahan untuk Level 3 (SSO Keycloak). Dipakai bersama argocd-values.yaml:
+#   helm upgrade argocd argo/argo-cd -n argocd -f bootstrap/argocd-values.yaml -f bootstrap/argocd-values-sso.yaml
+# Client secret TIDAK ditulis di file ini. Secret disuntikkan ke Secret argocd-secret lewat kubectl patch.
+configs:
+  cm:
+    # Ubah menjadi "false" setelah login SSO terbukti berfungsi.
+    admin.enabled: "true"
+    oidc.config: |
+      name: Keycloak
+      issuer: https://keycloak.gitops.kanjeeng.online/realms/gitops
+      clientID: argocd
+      clientSecret: $oidc.keycloak.clientSecret
+      requestedScopes: ["openid", "profile", "email", "groups"]
+  rbac:
+    policy.default: ""
+    scopes: "[groups]"
+    policy.csv: |
+      g, argocd-admins, role:admin
+      g, argocd-viewers, role:readonly

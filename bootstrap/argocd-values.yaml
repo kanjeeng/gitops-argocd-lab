@@ -1,0 +1,48 @@
+# Nilai Helm untuk instalasi awal ArgoCD (bootstrap, di luar GitOps).
+# Ganti gitops.kanjeeng.online dengan subdomain lab Anda.
+global:
+  domain: argocd.gitops.kanjeeng.online
+
+configs:
+  params:
+    # ArgoCD melayani HTTP; TLS diterminasi di Traefik (sertifikat Let's Encrypt).
+    server.insecure: true
+  cm:
+    url: https://argocd.gitops.kanjeeng.online
+    timeout.reconciliation: 180s
+
+server:
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { cpu: 300m, memory: 256Mi }
+
+controller:
+  replicas: 1
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+
+repoServer:
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { cpu: 300m, memory: 256Mi }
+
+applicationSet:
+  replicas: 1
+  resources:
+    requests: { cpu: 25m, memory: 64Mi }
+    limits: { cpu: 200m, memory: 128Mi }
+
+redis:
+  resources:
+    requests: { cpu: 25m, memory: 32Mi }
+    limits: { cpu: 200m, memory: 128Mi }
+
+# Dex dimatikan: SSO memakai OIDC langsung ke Keycloak (Level 3). Menghemat memori.
+dex:
+  enabled: false
+
+notifications:
+  enabled: false

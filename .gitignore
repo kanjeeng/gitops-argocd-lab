@@ -1,0 +1,17 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+crash.log
+
+# Kunci dan rahasia
+*.pem
+*.key
+k3s.yaml
+*.kubeconfig
+kubeconfig*
+*password*
+*secret*.local.yaml
+secret-patch.json

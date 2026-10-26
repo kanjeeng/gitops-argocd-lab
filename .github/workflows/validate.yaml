@@ -1,0 +1,32 @@
+name: validate-manifests
+
+on:
+  pull_request:
+    paths:
+      - "apps/**"
+      - "platform/**"
+      - "argocd/**"
+
+jobs:
+  kustomize-kubeconform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pasang kubeconform
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/download/v0.6.7/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
+
+      - name: Validasi overlay Kustomize
+        run: |
+          for dir in apps/*/overlays/*; do
+            echo "== $dir"
+            kubectl kustomize "$dir" | kubeconform -strict -ignore-missing-schemas -summary
+          done
+
+      - name: Validasi manifest platform dan ArgoCD
+        run: |
+          kubectl kustomize platform/keycloak | kubeconform -strict -ignore-missing-schemas -summary
+          kubeconform -strict -ignore-missing-schemas -summary argocd/projects argocd/applications argocd/level3 platform/argocd platform/cert-manager/issuers

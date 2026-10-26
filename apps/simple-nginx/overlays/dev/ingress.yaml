@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simple-nginx
+  annotations:
+    # Ganti menjadi letsencrypt-prod setelah uji staging berhasil (lewat commit Git).
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - nginx.gitops.kanjeeng.online
+      secretName: simple-nginx-tls
+  rules:
+    - host: nginx.gitops.kanjeeng.online
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: simple-nginx
+                port:
+                  number: 80

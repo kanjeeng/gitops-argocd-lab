@@ -1,0 +1,11 @@
+# Salin menjadi terraform.tfvars lalu isi nilainya.
+# IP publik operator: buka https://checkip.amazonaws.com
+admin_cidr        = "182.6.88.234/32"
+base_domain       = "gitops.kanjeeng.online"
+letsencrypt_email = "dimasleny210@gmail.com"
+
+# Opsional
+# existing_eip_allocation_id = "eipalloc-0123456789abcdef0"
+# use_spot                   = true
+# agent_instance_type        = "t3.medium"
+# enable_ssm                 = false

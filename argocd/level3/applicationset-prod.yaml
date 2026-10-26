@@ -1,0 +1,34 @@
+# ApplicationSet: satu template menghasilkan Application environment prod
+# untuk setiap aplikasi pada daftar. Environment dev tetap dikelola Application Level 1.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-prod
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - list:
+        elements:
+          - app: simple-nginx
+          - app: simple-httpd
+  template:
+    metadata:
+      name: "{{.app}}-prod"
+    spec:
+      project: demo-project
+      source:
+        repoURL: https://github.com/kanjeeng/gitops-argocd-lab.git
+        targetRevision: main
+        path: "apps/{{.app}}/overlays/prod"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: demo-prod
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true

@@ -1,0 +1,58 @@
+# Dua Ingress untuk host yang sama:
+# 1) keycloak-admin: /admin dan /realms/master dibatasi ke admin_cidr (konsol administrasi).
+# 2) keycloak-public: endpoint OIDC realm gitops tetap terbuka agar ArgoCD dapat
+#    mengambil discovery dan token dari dalam klaster.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-public
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - keycloak.gitops.kanjeeng.online
+      secretName: keycloak-tls
+  rules:
+    - host: keycloak.gitops.kanjeeng.online
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-admin
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: keycloak-admin-allowlist@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: keycloak.gitops.kanjeeng.online
+      http:
+        paths:
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+          - path: /realms/master
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080

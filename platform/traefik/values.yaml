@@ -1,0 +1,41 @@
+# Nilai Helm Traefik (chart v33, Traefik v3).
+deployment:
+  replicas: 1
+
+# Dipin ke node control-plane (node ber-Elastic IP) agar IP klien asli terbaca
+# oleh middleware IP allowlist (externalTrafficPolicy: Local).
+nodeSelector:
+  kubernetes.io/hostname: k3s-server
+
+service:
+  type: LoadBalancer
+  spec:
+    externalTrafficPolicy: Local
+
+ports:
+  web:
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+  websecure:
+    tls:
+      enabled: true
+
+providers:
+  kubernetesCRD:
+    enabled: true
+  kubernetesIngress:
+    enabled: true
+    # Mengisi status Ingress dengan alamat LoadBalancer agar ArgoCD menilai Ingress Healthy.
+    publishedService:
+      enabled: true
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+
+resources:
+  requests: { cpu: 50m, memory: 64Mi }
+  limits: { cpu: 300m, memory: 192Mi }

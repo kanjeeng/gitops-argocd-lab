@@ -1,0 +1,20 @@
+# Application induk (app-of-apps). Diterapkan SATU KALI secara manual.
+# Setelah itu seluruh Application anak dibuat dari folder argocd/applications/.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  namespace: argocd
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/kanjeeng/gitops-argocd-lab.git
+    targetRevision: main
+    path: argocd/applications
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-httpd
+  labels:
+    app: simple-httpd
+spec:
+  type: ClusterIP
+  selector:
+    app: simple-httpd
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

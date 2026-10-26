@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: demo-project
+  namespace: argocd
+spec:
+  description: Aplikasi tugas (simple-nginx, simple-httpd). Dibatasi ke repo, namespace demo*, tanpa resource klaster selain Namespace.
+  sourceRepos:
+    - https://github.com/kanjeeng/gitops-argocd-lab.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: "demo*"
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  roles:
+    - name: readonly
+      description: Hanya melihat aplikasi pada project ini
+      policies:
+        - p, proj:demo-project:readonly, applications, get, demo-project/*, allow
+      groups:
+        - argocd-viewers

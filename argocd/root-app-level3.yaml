@@ -1,0 +1,20 @@
+# Application induk Level 3 (Keycloak dan ApplicationSet).
+# Diterapkan manual hanya setelah Level 1 dan 2 selesai.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-level3
+  namespace: argocd
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/kanjeeng/gitops-argocd-lab.git
+    targetRevision: main
+    path: argocd/level3
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
