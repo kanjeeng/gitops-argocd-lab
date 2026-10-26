@@ -5,7 +5,7 @@ variable "aws_region" {
 }
 
 variable "admin_cidr" {
-  description = "IP publik operator dalam format CIDR, contoh 182.6.88.234/32"
+  description = "IP publik operator dalam format CIDR, contoh 182.5.242.249/32"
   type        = string
 }
 

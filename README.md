@@ -58,14 +58,14 @@ gitops-argocd-lab/
 
 ## Placeholder yang wajib diganti
 
-Ganti sebelum `git push`. Gunakan fitur *Replace in Files* pada editor (misalnya VS Code), lalu verifikasi dengan `git grep --untracked -n -E "kanjeeng.online|kanjeeng|182.6.88.234"` (hasil harus kosong).
+Ganti sebelum `git push`. Gunakan fitur *Replace in Files* pada editor (misalnya VS Code), lalu verifikasi dengan `git grep --untracked -n -E "kanjeeng.online|kanjeeng|182.5.242.249"` (hasil harus kosong).
 
 | Placeholder | Ganti dengan | Muncul di |
 |---|---|---|
 | `gitops.kanjeeng.online` | Subdomain lab Anda (misalnya `gitops.domainanda.com`) | `terraform.tfvars`, `bootstrap/*`, `platform/argocd`, `platform/keycloak`, `apps/*/overlays/*` |
 | `dimasleny210@gmail.com` | Email akun Let's Encrypt | `platform/cert-manager/issuers/*` |
 | `kanjeeng` | Username GitHub | `argocd/**` |
-| `182.6.88.234/32` | IP publik operator (CIDR) | `terraform.tfvars`, `platform/argocd/middleware-*`, `platform/keycloak/middleware-*` |
+| `182.5.242.249/32` | IP publik operator (CIDR) | `terraform.tfvars`, `platform/argocd/middleware-*`, `platform/keycloak/middleware-*` |
 
 ## Versi yang dipin
 

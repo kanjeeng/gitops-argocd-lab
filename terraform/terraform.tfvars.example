@@ -1,6 +1,6 @@
 # Salin menjadi terraform.tfvars lalu isi nilainya.
 # IP publik operator: buka https://checkip.amazonaws.com
-admin_cidr        = "182.6.88.234/32"
+admin_cidr        = "182.5.242.249/32"
 base_domain       = "gitops.kanjeeng.online"
 letsencrypt_email = "dimasleny210@gmail.com"
 
