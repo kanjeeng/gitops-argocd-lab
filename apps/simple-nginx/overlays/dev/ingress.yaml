@@ -5,7 +5,13 @@ metadata:
   annotations:
     # Ganti menjadi letsencrypt-prod setelah uji staging berhasil (lewat commit Git).
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+
+    # Membuka pintu masuk untuk port HTTP (web) dan HTTPS (websecure)
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+
+    # Sambungkan ke middleware redirect (format: nama-middleware@kubernetescrd)
+    traefik.ingress.kubernetes.io/router.middlewares: demo-redirect-to-https@kubernetescrd
+
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   ingressClassName: traefik
