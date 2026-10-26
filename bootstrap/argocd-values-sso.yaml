@@ -4,7 +4,7 @@
 configs:
   cm:
     # Ubah menjadi "false" setelah login SSO terbukti berfungsi.
-    admin.enabled: "true"
+    admin.enabled: "false"
     oidc.config: |
       name: Keycloak
       issuer: https://keycloak.gitops.kanjeeng.online/realms/gitops
