@@ -5,12 +5,14 @@ configs:
   cm:
     # Ubah menjadi "false" setelah login SSO terbukti berfungsi.
     admin.enabled: "false"
+    url: https://argocd.gitops.kanjeeng.online
     oidc.config: |
       name: Keycloak
       issuer: https://keycloak.gitops.kanjeeng.online/realms/gitops
       clientID: argocd
       clientSecret: $oidc.keycloak.clientSecret
       requestedScopes: ["openid", "profile", "email", "groups"]
+      redirectURL: https://argocd.gitops.kanjeeng.online/auth/callback
   rbac:
     policy.default: ""
     scopes: "[groups]"
