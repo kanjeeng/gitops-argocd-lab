@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/kanjeeng/gitops-argocd-lab.git
     targetRevision: main
-    path: apps/simple-nginx/overlays/dev
+    path: apps/simple-nginx/overlays/dev-nodeport
   destination:
     server: https://kubernetes.default.svc
     namespace: demo
