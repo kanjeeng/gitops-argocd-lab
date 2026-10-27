@@ -6,6 +6,6 @@ spec:
   type: ClusterIP
   ports:
   - port: 80
-    targetPort: 8080
+    targetPort: 3000  # <-- Ubah dari 8080 ke 3000
   selector:
     app: portofolio
