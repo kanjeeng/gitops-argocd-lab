@@ -8,4 +8,4 @@ resources:
 images:
 - name: kanjeeng/portofolio-tailwind-css
   newName: kanjeeng/portofolio-tailwind-css
-  newTag: latest
+  newTag: 6385006
