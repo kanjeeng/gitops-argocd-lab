@@ -4,11 +4,10 @@ metadata:
   name: portofolio
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-spec:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecurespec:
   ingressClassName: traefik
   rules:
-  - host: portofolio.gitops.kanjeeng.online
+  - host: portofolio-dev.gitops.kanjeeng.online
     http:
       paths:
       - path: /
@@ -20,5 +19,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - portofolio.gitops.kanjeeng.online
+    - portofolio-dev.gitops.kanjeeng.online
     secretName: portofolio-tls

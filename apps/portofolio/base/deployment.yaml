@@ -12,14 +12,23 @@ spec:
       labels:
         app: portofolio
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: portofolio
         image: kanjeeng/portofolio-tailwind-css:latest
         ports:
-        - containerPort: 3000  # <-- Ubah dari 8080 ke 3000
+        - containerPort: 3000
         envFrom:
         - secretRef:
             name: portofolio-secrets
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
         resources:
           requests:
             cpu: 10m
@@ -29,13 +38,13 @@ spec:
             memory: 256Mi
         readinessProbe:
           httpGet:
-            path: /      # Next.js biasanya merespons root atau buat endpoint khusus
-            port: 3000   # <-- Ubah ke 3000
+            path: /
+            port: 3000
           initialDelaySeconds: 5
           periodSeconds: 5
         livenessProbe:
           httpGet:
             path: /
-            port: 3000   # <-- Ubah ke 3000
+            port: 3000
           initialDelaySeconds: 10
           periodSeconds: 10
