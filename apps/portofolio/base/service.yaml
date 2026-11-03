@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: portofolio
 spec:
-  type: ClusterIP
   ports:
   - port: 80
-    targetPort: 3000  # <-- Ubah dari 8080 ke 3000
+    protocol: TCP
+    targetPort: 3000
   selector:
     app: portofolio
